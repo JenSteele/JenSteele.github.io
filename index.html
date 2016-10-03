@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Jensteele.GitHub.io by JenSteele</title>
+    <title>Jen Steele Data Scientist by JenSteele</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,34 +11,43 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Jensteele.GitHub.io</h1>
+      <h1 class="project-name">Jen Steele Data Scientist</h1>
       <h2 class="project-tagline">Insight Data Science Project</h2>
     </section>
 
     <section class="main-content">
       <p><a href="https://docs.google.com/presentation/d/1fHyhkJwxZH7rlcteOKao_jNmajMXYLFPINvKSbtvJQA/edit#slide=id.g169c9155c5_0_98">Google Slides</a></p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+<h1>
+<a id="automated-pricing-mechanism" class="anchor" href="#automated-pricing-mechanism" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Automated Pricing Mechanism</h1>
 
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>For my Insight Data Science project, I teamed up with GoLorry, a trucking startup operating in India, to automate their pricing.</p>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<h2>
+<a id="the-brief" class="anchor" href="#the-brief" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Brief</h2>
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<p>GoLorry aims to match up shippers with drivers, and presents the shippers with instant pricing on their order to provide surety of cost and reduce the transaction costs for shippers.</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Currently they are pricing manually based on their knowledge of the market.  It is a time-intensive method, and is not sustainable as they continue to scale up.  My role was to create an automated pricing mechanism based on their past orders.</p>
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<h2>
+<a id="the-pipeline" class="anchor" href="#the-pipeline" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Pipeline</h2>
 
-<p>You can @mention a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>The project has four main components.  First, a pricing algorithm is created that uses past orders to train a predictive price mechanism for new orders.  Second, the shipper enters a the order details in an interactive form.  Third, the algorithm presents the shipper with a price that the customer accepts or rejects.  Finally a cosine similarity measure is used to predict whether the order might be an outlier, i.e. the predicted price is not likely to be accurate.  If the order is similar to another recent order for which the cost was significantly greater than the price, a flag will be raised prompting GoLorry to take a closer look at the price.</p>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+<h2>
+<a id="the-pricing-algorithm" class="anchor" href="#the-pricing-algorithm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Pricing Algorithm</h2>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<p>The main obstacle with this project was the scarcity of data.  It was not possible to train a useful model using only completed orders with cost details.  As a result, I chose to use the set of all priced orders, whether or not the customer accepted, in order to provide an automated version of the model that GoLorry is currently using.  As the completed order dataset continues to grow they will be able to update the pricing mechanism using the python code I provided on only completed orders, and get a better fit with actual costs.  Once they reach a sufficient level I would suggest transitioning to more of a machine learning approach to get a more flexible and accurate model.</p>
+
+<p>For the automated pricing model I fit a linear regression to the priced order dataset, and predicted their pricing with 90% accuracy.  I kept the features limited to avoid overfitting, and to ensure it would translate over into the completed order dataset.</p>
+
+<p>Two features of interest were chillies and whether the shipment was headed to, or from, West Bengal.  These showed up as significant in the regression, and upon further investigation I found that the reasons.</p>
+
+<p>Chillies are very light, and as a result it is worthwhile to overload the truck.  These overloaded trucks are subject to fines as they cross state borders, but the fine is small enough to make it worthwhile to overload the truck.  A shipment of chillies has an on average 14140 rupee surcharge according to the model.</p>
+
+<p>The other interesting variable was West Bengal.  There are more shipments that go to West Bengal than shipments leaving West Bengal.  As a result, because drivers' costs are higher if there is no return fare, a shipment with the destination of West Bengal has a premium of 27000 rupees, and a shipment originating in West Bengal will be 17000 rupees cheaper, all else equal.
+The pricing algorithm had an R-squared (fit) of 75% when applied to the completed order data.  The fitted model slightly overestimates the price, due to the inherent bias in the priced dataset, where on average the prices for orders that were not accepted was slightly higher.  Ideally this model would be used only on completed order data in the future, to get a better estimate of the true cost of an order.  However, we should keep in mind that even these data are skewed, as the price was set by GoLorry, and they had a general strategy of taking a fixed margin, and as a result the true cost may not have been revealed.</p>
 
       <footer class="site-footer">
 
