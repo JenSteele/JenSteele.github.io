@@ -1,43 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Jen Steele Data Scientist : Insight Data Science Project">
+    <title>Jen Steele Data Scientist by JenSteele</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Jen Steele Data Scientist</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Jen Steele Data Scientist</h1>
+        <p class="header">Insight Data Science Project</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/JenSteele">View on GitHub</a>
 
-          <h1 id="project_title">Jen Steele Data Scientist</h1>
-          <h2 id="project_tagline">Insight Data Science Project</h2>
 
-        </header>
-    </div>
+        <ul>
+          <li><a class="buttons github" href="https://github.com/JenSteele">GitHub Profile</a></li>
+        </ul>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+      </header>
+      <section>
         <p><a href="https://docs.google.com/presentation/d/1fHyhkJwxZH7rlcteOKao_jNmajMXYLFPINvKSbtvJQA/edit#slide=id.g169c9155c5_0_98">Google Slides</a></p>
 
 <h1>
 <a id="automated-pricing-mechanism" class="anchor" href="#automated-pricing-mechanism" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Automated Pricing Mechanism</h1>
 
-<p>For my Insight Data Science project, I teamed up with GoLorry, a trucking startup operating in India, to automate their pricing.</p>
+<p>For my Insight Data Science project I teamed up with GoLorry, a trucking startup operating in India to automate their pricing.</p>
 
 <h2>
 <a id="the-brief" class="anchor" href="#the-brief" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Brief</h2>
 
-<p>GoLorry aims to match up shippers with drivers, and presents the shippers with instant pricing on their order to provide surety of cost and reduce the transaction costs for shippers.</p>
+<p>GoLorry aims to match up shippers with drivers and presents the shippers with instant pricing on their order to provide surety of cost and reduce the transaction costs for shippers.</p>
 
 <p>Currently they are pricing manually based on their knowledge of the market.  It is a time-intensive method, and is not sustainable as they continue to scale up.  My role was to create an automated pricing mechanism based on their past orders.</p>
 
@@ -49,11 +49,11 @@
 <h2>
 <a id="the-pricing-algorithm" class="anchor" href="#the-pricing-algorithm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Pricing Algorithm</h2>
 
-<p>The main obstacle with this project was the scarcity of data.  It was not possible to train a useful model using only completed orders with cost details.  As a result, I chose to use the set of all priced orders, whether or not the customer accepted, in order to provide an automated version of the model that GoLorry is currently using.  As the completed order dataset continues to grow they will be able to update the pricing mechanism using the python code I provided on only completed orders, and get a better fit with actual costs.  Once they reach a sufficient level I would suggest transitioning to more of a machine learning approach to get a more flexible and accurate model.</p>
+<p>The main obstacle with this project was the scarcity of data.  It was not possible to train a useful model using only completed orders with cost details.  As a result, I chose to use the set of all priced orders, whether or not the customer accepted, in order to provide an automated version of the model that GoLorry is currently using.  As the completed order dataset continues to grow they will be able to update the pricing mechanism using the python code I provided on only completed orders and get a better fit with actual costs.  Once they reach a sufficient level I would suggest transitioning to more of a machine learning approach to get a more flexible and accurate model.</p>
 
 <p>For the automated pricing model I fit a linear regression to the priced order dataset, and predicted their pricing with 90% accuracy.  I kept the features limited to avoid overfitting, and to ensure it would translate over into the completed order dataset.</p>
 
-<p>Two features of interest were chillies and whether the shipment was headed to, or from, West Bengal.  These showed up as significant in the regression, and upon further investigation I found that the reasons.</p>
+<p>Two features of interest were chillies and whether the shipment was headed to or from West Bengal.  These showed up as significant in the regression, and upon further investigation I found that the reasons.</p>
 
 <p><img src="https://github.com/JenSteele/JenSteele.github.io/blob/master/F2B4EP.jpg?raw=true" alt="Image of workers loading chillies into truck"></p>
 
@@ -62,18 +62,13 @@
 <p><img src="https://github.com/JenSteele/JenSteele.github.io/blob/master/West%20Bengal.png?raw=true" alt="Map of West Bengal">
 The other interesting variable was West Bengal.  There are more shipments that go to West Bengal than shipments leaving West Bengal.  As a result, because drivers' costs are higher if there is no return fare, a shipment with the destination of West Bengal has a premium of 27000 rupees, and a shipment originating in West Bengal will be 17000 rupees cheaper, all else equal.</p>
 
-<p>The pricing algorithm had an R-squared (fit) of 75% when applied to the completed order data.  The fitted model slightly overestimates the price, due to the inherent bias in the priced dataset, where on average the prices for orders that were not accepted was slightly higher.  Ideally this model would be used only on completed order data in the future, to get a better estimate of the true cost of an order.  However, we should keep in mind that even these data are skewed, as the price was set by GoLorry, and they had a general strategy of taking a fixed margin, and as a result the true cost may not have been revealed.</p>
+<p>The pricing algorithm had an R-squared (fit) of 75% when applied to the completed order data.  The fitted model slightly overestimates the price, due to the inherent bias in the priced dataset, where on average the prices for orders that were not accepted was slightly higher.  Ideally this model would be used only on completed order data in the future, to get a better estimate of the true cost of an order.  However, we should keep in mind that even these data are skewed, as the price was set by GoLorry.  They had a general strategy of taking a fixed margin and as a result the true cost may not have been revealed.</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-
-    
-
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>
