@@ -60,11 +60,22 @@
 <p>Chillies are very light, and the trucks are often overloaded in terms of volume.  These overloaded trucks are subject to fines as they cross state borders, but the fine is small enough to make overloading the truck worthwhile.  A shipment of chillies has a surcharge roughly equal to the expected fine.</p>
 
 <p><img src="https://github.com/JenSteele/JenSteele.github.io/blob/master/West%20Bengal.png?raw=true" alt="Map of West Bengal">
-The other interesting variable was West Bengal.  There are more shipments that go to West Bengal than shipments leaving West Bengal.  As a result, because drivers' costs are higher if there is no return fare, a shipment with the destination of West Bengal has a premium of 27000 rupees, and a shipment originating in West Bengal will be 17000 rupees cheaper, all else equal.</p>
+The other interesting variable was West Bengal.  There are more shipments that go to West Bengal than shipments leaving West Bengal.  As a result, because drivers' costs are higher if there is no return fare, a shipment with the destination of West Bengal has a large premium, and a shipment originating in West Bengal will have a discount mirroring the excess demand for drivers heading to West Bengal, and excess supply of drivers headed out of West Bengal.</p>
 
-<p>The pricing algorithm had an R-squared of 75% when applied to the completed order data.  This means that the model explains 75% of the variance in the model.  The fitted model slightly overestimates the price, due to the inherent bias in the priced dataset, where on average the prices for orders that were not accepted was slightly higher.  The following graph shows the priced </p>
+<p>The priced orders dataset was much larger than the completed orders dataset, and had a larger mass at the longer distances.  The datasets are biased in different ways.  The priced orders dataset has many orders that were priced relatively highly, and these prices were not accepted because they were too high.  This resulted in the price predictor predicting a higher price than the accurate price on average.  The following graph shows the priced orders in purple, and the completed orders with cost details in green.</p>
 
-<p>Ideally this model would be used only on completed order data in the future, to get a better estimate of the true cost of an order.  However, we should keep in mind that even these data are skewed, as the price was set by GoLorry.  They had a general strategy of taking a fixed margin and as a result the true cost may not have been revealed.</p>
+<p><img src="https://github.com/JenSteele/JenSteele.github.io/blob/master/Priced_Orders.png?raw=true" alt="Graph of completed and priced orders datasets"></p>
+
+<p>The pricing algorithm was trained on the purple datapoints, and fitted to the green data points (with other features in addition to distance and weight).  The algorithm had an R-squared of 75% when applied to the completed order data.  This means that the model explains 75% of the variance in actual costs.  The fitted model slightly overestimates the price, due to the inherent bias in the priced dataset, where on average the prices for orders that were not accepted was slightly higher.  In the following graph the purple dots are the accurate price using the cost data for the order, and the predicted price for the order from the model.</p>
+
+<p><img src="https://github.com/JenSteele/JenSteele.github.io/blob/master/model_fit.png?raw=true" alt="Graph of completed orders and accurate price"></p>
+
+<p>Ideally this model would be used only on completed order data in the future, to get a better estimate of the true cost of an order.  However, we should keep in mind that even these data are skewed, as the price was set by GoLorry.  They have a general strategy of taking a fixed margin and as a result the true cost may not have been revealed.</p>
+
+<h2>
+<a id="outlier-detection" class="anchor" href="#outlier-detection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Outlier Detection</h2>
+
+<p>The final step in the analysis was to create a flag for orders that are suspected to be outliers.  There are two reasons this may occur.  One, the pricing structure in one of the dimensions might be changing over time, and the model does not fully capture time trends.  Two, there may be a feature associated with a particular type of order that is not in the dataset.  The flag puts in a checks and balances system to warn GoLorry if an order is suspected to be priced below cost.  The flag is implemented through a cosine similarity measure.  Given the vector of the incoming order details, the order is compared to recent orders using cosine similarity.  If the most similar recent order was an outlier, where cost was significantly greater than the predicted price, a flag is raised for the order.  This will notify GoLorry that they should take a closer look at the order to ensure the price is accurate.  </p>
       </section>
     </div>
 
